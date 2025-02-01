@@ -14,6 +14,7 @@ import db.calendar.service.ReminderService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,7 +53,7 @@ public class ReminderController {
             .body(new ApiResponse<Reminder>(true,reminder2));
     }
 
-    @PutMapping("reminders/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<Reminder>> updateReminder(@RequestBody @Valid Reminder reminder,@PathVariable("id") @Min(1) Long id) {
         service.getReminderById(id);
 
@@ -62,7 +63,7 @@ public class ReminderController {
             .body(new ApiResponse<Reminder>(true,reminder2));
     }
 
-    @PutMapping("reminders/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteReminder(@PathVariable("id") @Min(1) Long id) {
        try{
         service.hardDeleteReminder(id);
