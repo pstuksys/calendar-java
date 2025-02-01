@@ -38,42 +38,38 @@ public class ReminderController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<Reminder>> getReminderById(@PathVariable("id") @Min(1) Long id) {
-        try{
             Reminder responseBody = service.getReminderById(id);
 
             return ResponseEntity.ok()
                 .body(new ApiResponse<Reminder>(true,responseBody));
-        }catch(Exception ex){
-            return ResponseEntity.internalServerError()
-                .body(new ApiResponse<>(ex.getMessage()));
-        }
     }
 
     @PostMapping
     public ResponseEntity<ApiResponse<Reminder>> createReminder(@RequestBody @Valid Reminder reminder) {
-       try{
         Reminder reminder2 = service.createReminder(reminder);
 
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(new ApiResponse<Reminder>(true,reminder2));
-       }catch(IllegalArgumentException ex){
-            return ResponseEntity.badRequest()
-                .body(new ApiResponse<>(ex.getMessage()));
-       }
     }
 
     @PutMapping("reminders/{id}")
     public ResponseEntity<ApiResponse<Reminder>> updateReminder(@RequestBody @Valid Reminder reminder,@PathVariable("id") @Min(1) Long id) {
-       try{
         service.getReminderById(id);
 
         Reminder reminder2 = service.updateReminder(reminder,id);
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(new ApiResponse<Reminder>(true,reminder2));
+    }
+
+    @PutMapping("reminders/{id}")
+    public ResponseEntity<Void> deleteReminder(@PathVariable("id") @Min(1) Long id) {
+       try{
+        service.hardDeleteReminder(id);
+
+        return ResponseEntity.noContent().build();
        }catch(IllegalArgumentException ex){
-            return ResponseEntity.badRequest()
-                .body(new ApiResponse<>(ex.getMessage()));
+            return ResponseEntity.badRequest().build();
        }
     }
     
