@@ -1,5 +1,6 @@
 package db.calendar.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,5 +24,8 @@ public interface ReminderRepository extends JpaRepository<Reminder,Long> {
     @Modifying
     @Query("DELETE FROM Reminder u WHERE u.id=:id AND u.deletedAt IS NULL")
     public Integer customDeleteById(@Param("id") Long id);
+
+    @Query("SELECT r FROM Reminder r WHERE r.deletedAt IS NULL AND r.date BETWEEN :startDate AND :endDate ORDER BY r.date ASC")
+    List<Reminder> customFindAllRemindersWithinYearSpan(@Param("startDate") LocalDateTime startDate,@Param("endDate") LocalDateTime endDate);
 }
 

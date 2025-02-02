@@ -1,5 +1,6 @@
 package db.calendar.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,5 +59,12 @@ public class ReminderService {
     public Reminder getReminderById(Long id) {
         return repository.customFindById(id)
             .orElseThrow(() -> new EntityNotFoundException("Reminder not found"));
+    }
+
+    public List<Reminder> getAllCurrentYearStartTodayActiveReminders() {
+        LocalDateTime startDate = LocalDateTime.now();
+        LocalDateTime endDate = startDate.plusYears(1);
+        
+        return repository.customFindAllRemindersWithinYearSpan(startDate,endDate);
     }
 }

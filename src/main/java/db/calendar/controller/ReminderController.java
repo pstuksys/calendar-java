@@ -73,5 +73,12 @@ public class ReminderController {
             return ResponseEntity.badRequest().build();
        }
     }
+
+    @GetMapping("/active")
+    public ResponseEntity<ApiResponse<List<Reminder>>> getAllCurrentYearStartTodayActiveReminders(){
+        List<Reminder> response = service.getAllCurrentYearStartTodayActiveReminders();
+
+        return ResponseEntity.ok().body(new ApiResponse<List<Reminder>>(true,response));
+    }
     
 }
